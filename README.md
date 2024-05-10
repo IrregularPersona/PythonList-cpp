@@ -1,6 +1,6 @@
 # About:
 ------
-This is an api recreation of Python's list inside of C++, without using external dependencies (vanilla C++). Any suggestions/recommendations is highly accepted 😊.
+This is an api recreation of Python's list inside of C++, without using external dependencies (vanilla C++). The container itself is a vector that can hold int, C++'s string object, boolean, and doubles. Any suggestions/recommendations is highly accepted 😊.
 
 ## Building:
  ----------
