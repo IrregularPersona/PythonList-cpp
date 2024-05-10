@@ -1,6 +1,7 @@
 #ifndef PYTHON_LIST_HPP
 #define PYTHON_LIST_HPP
 
+
 #include <iostream>
 #include <variant>
 #include <vector>
@@ -20,11 +21,17 @@ public:
     void remove_item(std::variant<int, double, std::string, bool> item);
     void remove_index(size_t index);
     std::variant<int, double, std::string, bool>& operator[](size_t index);
-    void printIdx(size_t index);
+    void print();
+    void print(size_t index);
     template <typename T> bool search(T item);
     size_t size() const;
 
     friend std::ostream& operator<<(std::ostream& os, const pythonList& myList);
 };
+
+inline std::ostream& operator<<(std::ostream& os, const std::variant<int, double, std::string, bool>& var) {
+    std::visit([&os](const auto& value) { os << value; }, var);
+    return os;
+}
 
 #endif

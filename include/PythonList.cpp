@@ -38,7 +38,26 @@ std::variant<int, double, std::string, bool>& pythonList::operator[](size_t inde
     return data[index];
 }
 
-void pythonList::printIdx(size_t index) {
+void pythonList::print() {
+    if(data.size() == 0) {
+        std::cerr << "List empty!\n";
+        return;
+    } else {
+        for(const auto& element : data) {
+            std::visit([](const auto& value) {
+                if constexpr (std::is_same_v<std::decay_t<decltype(value)>, bool>) {
+                    std::cout << (value ? "true" : "false") << " ";
+                } else {
+                    std::cout << value << " ";
+                }
+            }, element);
+        }
+        std::cout << std::endl;
+    }
+}
+
+
+void pythonList::print(size_t index) {
     if (index >= data.size()) {
         std::cout << "Index out of range" << std::endl;
     } else {
@@ -52,13 +71,9 @@ void pythonList::printIdx(size_t index) {
     }
 }
 
-std::ostream& operator<<(std::ostream& os, const pythonList& myList) {
-    for(const auto& variant : myList.data) {
-        std::visit([&os](const auto& value){
-            os << value;
-        }, variant);
-        os << " ";
-    }
+template<typename... Ts>
+std::ostream& operator<<(std::ostream& os, const std::variant<Ts...>& var) {
+    std::visit([&os](const auto& value) { os << value; }, var);
     return os;
 }
 
@@ -75,3 +90,4 @@ bool pythonList::search(T item) {
 size_t pythonList::size() const {
     return data.size();
 }
+
