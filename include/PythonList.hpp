@@ -8,6 +8,9 @@
 #include <stdexcept>
 #include <algorithm>
 #include <iomanip>
+#include <cstddef>
+
+enum class SortOrder { Ascending, Descending };
 
 class pythonList {
 protected:
@@ -25,6 +28,11 @@ public:
     void print(size_t index);
     template <typename T> bool search(T item);
     size_t size() const;
+    void reverse();
+    void reverse(size_t startIndex, size_t endIndex);
+    void sort();
+    void sort(SortOrder order);
+    void sort(SortOrder order, size_t startIndex, size_t endIndex);
 
     friend std::ostream& operator<<(std::ostream& os, const pythonList& myList);
 };

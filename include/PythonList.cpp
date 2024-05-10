@@ -9,7 +9,7 @@ void pythonList::append(std::variant<int, double, std::string, bool> item) {
 }
 
 void pythonList::append_at_index(std::variant<int, double, std::string, bool> item, size_t index) {
-    if (index < data.size()) {
+    if (index <= data.size() && index > 0) {
         data.insert(data.begin() + index, item);
     } else {
         throw std::out_of_range("Index out of range");
@@ -47,6 +47,8 @@ void pythonList::print() {
             std::visit([](const auto& value) {
                 if constexpr (std::is_same_v<std::decay_t<decltype(value)>, bool>) {
                     std::cout << (value ? "true" : "false") << " ";
+                } else if constexpr (std::is_same_v<std::decay_t<decltype(value)>, std::string>) {
+                    std::cout << "\'" << value << "\'" << " ";
                 } else {
                     std::cout << value << " ";
                 }
@@ -64,10 +66,57 @@ void pythonList::print(size_t index) {
         std::visit([](const auto& value) {
             if constexpr (std::is_same_v<std::decay_t<decltype(value)>, bool>) {
                 std::cout << (value ? "true" : "false");
+            } else if constexpr (std::is_same_v<std::decay_t<decltype(value)>, std::string>) {
+                std::cout << "\'" << value << "\'";
             } else {
                 std::cout << value;
             }
         }, data[index]);
+    }
+}
+
+void pythonList::reverse() {
+    std::reverse(data.begin(), data.end());
+}
+
+void pythonList::reverse(size_t startIndex, size_t endIndex) {
+    std::reverse(data.begin() + startIndex, data.end() + endIndex);
+}
+
+void pythonList::sort() {
+    std::sort(data.begin(), data.end());
+}
+
+void pythonList::sort(SortOrder order) {
+    if (order == SortOrder::Ascending) {
+        std::sort(data.begin(), data.end(), [](const auto& a, const auto& b) {
+            return a < b;
+        });
+    } else if (order == SortOrder::Descending) {
+        std::sort(data.begin(), data.end(), [](const auto& a, const auto& b) {
+            return a > b;
+        });
+    } else {
+        std::cerr << "Invalid sort order specified." << std::endl;
+    }
+}
+
+void pythonList::sort(SortOrder order, size_t startIndex, size_t endIndex) {
+    if (startIndex >= endIndex || endIndex > data.size()) {
+        std::cerr << "Invalid range specified for sorting." << std::endl;
+        return;
+    }
+
+    if (order == SortOrder::Ascending) {
+        std::sort(data.begin() + startIndex, data.begin() + endIndex, [](const auto& a, const auto& b) {
+            return a < b;
+        });
+    } else if (order == SortOrder::Descending) {
+        std::sort(data.begin() + startIndex, data.begin() + endIndex, [](const auto& a, const auto& b) {
+            return a > b;
+        });
+    } else {
+        std::cerr << "Invalid sort order specified." << std::endl;
     }
 }
 

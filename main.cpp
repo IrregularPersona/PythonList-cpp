@@ -24,4 +24,23 @@ int main() {
     }
 
     myList.print();
+    myList.sort(SortOrder::Ascending);
+    myList.print();
+    myList.sort(SortOrder::Descending);
+    myList.print();
+
+    std::cout << myList.size() << std::endl;
+
+    myList.append_at_index("Test", 5);
+    myList.print();
+
+    myList.remove_item(10);
+    myList.print();
+
+    myList.remove_index(2);
+    myList.print();
+
+    myList.reverse();
+    myList.print();
+
 }
