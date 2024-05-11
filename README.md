@@ -33,7 +33,7 @@ Use the available makefile. You can modify it to work in your own custom workspa
 
 - C++:
 
-    When I looked into C++, I first stumbled upon a StackOverflow [article](https://google.com) that answered my question (albeit from 2009(?)). The only problem with the page was that the answers kept recommending the usage of Boost.any, which is an external dependency. What I wanted to do was implement this entire thing on vanilla C/C++ wherever I can. And, thats when I found std::variant from the C++17 standard.
+    When I looked into C++, I first stumbled upon a StackOverflow [article](https://stackoverflow.com/questions/4738405/how-can-i-store-objects-of-differing-types-in-a-c-container) that answered my question (albeit from 2011). The only problem with the page was that the answers kept recommending the usage of Boost.any, which is an external dependency. What I wanted to do was implement this entire thing on vanilla C/C++ wherever I can. And, thats when I found std::variant from the C++17 standard.
 
 - std::variant:
 
