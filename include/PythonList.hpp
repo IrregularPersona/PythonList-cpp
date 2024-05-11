@@ -19,22 +19,34 @@ protected:
 public:
     pythonList();
     pythonList(std::initializer_list<std::variant<int, double, std::string, bool>> initList);
-    void append(std::variant<int, double, std::string, bool> item);
-    void append_at_index(std::variant<int, double, std::string, bool> item, size_t index);
-    void remove_item(std::variant<int, double, std::string, bool> item);
-    void remove_index(size_t index);
     std::variant<int, double, std::string, bool>& operator[](size_t index);
+    friend std::ostream& operator<<(std::ostream& os, const pythonList& myList);
+    template <typename T> bool find(T item);
+    template <typename T> size_t index(T item);
+    template <typename T> size_t count(T item);
+    void append(std::variant<int, double, std::string, bool> item);
+    void clear();
+    void copy(pythonList& originList, pythonList& copyList);
+    void extend(pythonList& destList, pythonList& srcList);
+    void insert(size_t index, std::variant<int, double, std::string, bool> item);
+    void pop(size_t index);
     void print();
     void print(size_t index);
-    template <typename T> bool search(T item);
-    size_t size() const;
+    void remove(std::variant<int, double, std::string, bool> item);
     void reverse();
     void reverse(size_t startIndex, size_t endIndex);
     void sort();
     void sort(SortOrder order);
     void sort(SortOrder order, size_t startIndex, size_t endIndex);
+    size_t size() const;
 
-    friend std::ostream& operator<<(std::ostream& os, const pythonList& myList);
+    /*
+        - make an extend method
+        - make an index method
+        - make a count method
+        - make a copy method
+        - make a clear method
+    */
 };
 
 inline std::ostream& operator<<(std::ostream& os, const std::variant<int, double, std::string, bool>& var) {

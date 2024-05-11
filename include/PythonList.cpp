@@ -8,7 +8,7 @@ void pythonList::append(std::variant<int, double, std::string, bool> item) {
     data.push_back(item);
 }
 
-void pythonList::append_at_index(std::variant<int, double, std::string, bool> item, size_t index) {
+void pythonList::insert(size_t index, std::variant<int, double, std::string, bool> item) {
     if (index <= data.size() && index > 0) {
         data.insert(data.begin() + index, item);
     } else {
@@ -16,18 +16,44 @@ void pythonList::append_at_index(std::variant<int, double, std::string, bool> it
     }
 }
 
-void pythonList::remove_item(std::variant<int, double, std::string, bool> item) {
+void pythonList::remove(std::variant<int, double, std::string, bool> item) {
     auto iter = std::find(data.begin(), data.end(), item);
     if (iter != data.end()) {
         data.erase(iter);
     }
 }
 
-void pythonList::remove_index(size_t index) {
+void pythonList::pop(size_t index) {
     if (index < data.size()) {
         data.erase(data.begin() + index);
     } else {
         throw std::out_of_range("Index out of range");
+    }
+}
+
+void pythonList::clear() {
+    
+    data.clear();
+    
+}
+
+void pythonList::copy(pythonList& originList, pythonList& copyList) {
+    
+    copyList.clear();
+
+    for(size_t i = 0; i < originList.size(); i++) {
+        copyList.append(originList[i]);
+    }
+
+}
+
+void pythonList::extend(pythonList& destList, pythonList& srcList) {
+    
+    if(destList.size() <= 0) { throw std::length_error("Destination list is empty!"); }
+    if(srcList.size() <= 0) { throw std::length_error("Source list is empty!"); }
+    
+    for(size_t i = 0; i < data.size(); i++) {
+        destList.append(srcList[i]);
     }
 }
 
@@ -126,8 +152,36 @@ std::ostream& operator<<(std::ostream& os, const std::variant<Ts...>& var) {
     return os;
 }
 
+template <typename T> size_t pythonList::count(T item) {
+    if(data.size() <= 0) { throw std::length_error("List is empty!"); }
+    else {
+        size_t itemCount = 0;
+        for(size_t i = 0; i < data.size(); i++) {
+            if(std::holds_alternative<T>(data[i]) && std::get<T>(data[i]) == item) {
+                itemCount++;
+            }
+        }
+        return itemCount;
+    }
+    return -1;
+}
+
+template<typename T>
+size_t pythonList::index(T item) {
+    if(data.size() <= 0) {
+        throw std::length_error("List is empty!");
+    } else {
+        for(size_t i = 0; i < data.size(); i++) {
+            if(std::holds_alternative<T>(data[i]) && std::get<T>(data[i]) == item) {
+                return i;
+            } 
+        }
+    }
+    return -1;
+}
+
 template <typename T>
-bool pythonList::search(T item) {
+bool pythonList::find(T item) {
     for (size_t i = 0; i < data.size(); ++i) {
         if (std::holds_alternative<T>(data[i]) && std::get<T>(data[i]) == item) {
             return true;
